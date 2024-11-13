@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   NavbarContainer,
   StyledLogo,
@@ -11,22 +12,30 @@ import {
   MobileMenu,
   OptionsMenuMobile,
 } from "../styles/NavbarStyles";
-import LogoSvg from "../assets/steamLogo.svg"; // Ajusta la ruta según sea necesario
+import LogoSvg from "../assets/steamLogo.svg";
 
 function Navbar() {
   const [selectedOption, setSelectedOption] = useState("TIENDA");
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
-    setMobileMenuOpen(false); // Cerrar el menú después de hacer clic en una opción
+    setMobileMenuOpen(false);
   };
 
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!isMobileMenuOpen); // Alternar estado del menú móvil
+    setMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Efecto para cerrar el menú móvil al redimensionar la ventana
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
+
+  const handleRegisterClick = () => {
+    navigate("/register");
+  };
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 1343 && isMobileMenuOpen) {
@@ -41,37 +50,39 @@ function Navbar() {
   return (
     <NavbarContainer>
       <MobileMenuButton onClick={toggleMobileMenu}>☰</MobileMenuButton>
-      <StyledLogo src={LogoSvg} alt="Logo de Steam" />
-      <OptionsContainer isOpen={isMobileMenuOpen}>
+      <StyledLogo src={LogoSvg} alt="Logo de Steam" onClick={() => navigate("/")} />
+      <OptionsContainer>
         {["TIENDA", "COMUNIDAD", "ACERCA DE", "SOPORTE"].map((option) => (
           <Option
             key={option}
             onClick={() => handleOptionClick(option)}
-            isSelected={selectedOption === option}
+            $isSelected={selectedOption === option} // Cambiado a $isSelected
           >
             {option}
           </Option>
         ))}
       </OptionsContainer>
-      <OptionsContainer isOpen={isMobileMenuOpen}>
+      <OptionsContainer>
         <OptionsContainerLogin>
-          <OptionLogin>Inicio de sesión</OptionLogin>
+          <OptionLogin onClick={handleLoginClick}>Inicio de sesión</OptionLogin>
           <VerticalBar />
-          <OptionLogin>Registrarse</OptionLogin>
+          <OptionLogin onClick={handleRegisterClick}>Registrarse</OptionLogin>
         </OptionsContainerLogin>
       </OptionsContainer>
-      <MobileMenu isOpen={isMobileMenuOpen}>
+      <MobileMenu $isOpen={isMobileMenuOpen}>
+        {" "}
+        {/* Cambiado a $isOpen */}
         {["TIENDA", "COMUNIDAD", "ACERCA DE", "SOPORTE"].map((option) => (
           <OptionsMenuMobile
             key={option}
             onClick={() => handleOptionClick(option)}
-            isSelected={selectedOption === option}
+            $isSelected={selectedOption === option} // Cambiado a $isSelected
           >
             {option}
           </OptionsMenuMobile>
         ))}
-        <OptionsMenuMobile>Inicio de sesión</OptionsMenuMobile>
-        <OptionsMenuMobile>Registrarse</OptionsMenuMobile>
+        <OptionsMenuMobile onClick={handleLoginClick}>Inicio de sesión</OptionsMenuMobile>
+        <OptionsMenuMobile onClick={handleRegisterClick}>Registrarse</OptionsMenuMobile>
       </MobileMenu>
     </NavbarContainer>
   );

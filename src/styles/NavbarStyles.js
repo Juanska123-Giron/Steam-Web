@@ -7,48 +7,50 @@ export const NavbarContainer = styled.nav`
   background-color: #181d24;
   padding: 30px 279px;
   color: #ffffff;
-  position: relative; // Para asegurar que el MobileMenu se posicione en relación a la Navbar
-
+  position: relative;
   @media (max-width: 1342px) {
-    padding: 30px 20px; // Ajuste de padding para pantallas más pequeñas
+    padding: 30px 20px;
   }
 `;
 
 export const StyledLogo = styled.img`
   width: 176px;
   height: auto;
-
-  @media (max-width: 1323px) {
-    width: 150px; // Reducción del tamaño del logo
-    margin: 0 auto; // Centrando el logo
+  cursor: pointer;
+  @media (max-width: 1342px) {
+    width: 150px;
+    margin: 0 auto;
   }
 `;
 
 export const OptionsContainer = styled.div`
   margin-top: 5px;
   margin-left: 2.6%;
-  display: flex; // Alineación horizontal
+  display: flex;
   margin-right: auto;
-
-  @media (max-width: 1323px) {
-    display: none; // Ocultar en pantallas pequeñas
+  @media (max-width: 1342px) {
+    display: none;
   }
 `;
 
 export const MobileMenuButton = styled.button`
   display: none;
-  @media (max-width: 1323px) {
+  @media (max-width: 1342px) {
     display: block;
     background: none;
     border: none;
     color: #ffffff;
-    font-size: 24px;
+    font-size: 34px;
     cursor: pointer;
   }
 `;
-export const MobileMenu = styled.div`
+
+export const MobileMenu = styled.div.attrs((props) => ({
+  // Filtrar el prop $isOpen para que no se pase al DOM
+  isOpen: undefined,
+}))`
   text-transform: uppercase;
-  display: ${(props) => (props.isOpen ? "block" : "none")}; // Cambia a block
+  display: ${(props) => (props.$isOpen ? "block" : "none")}; // Cambia a block
   margin-top: 25px;
   background-color: #2e3641;
   width: 100%;
@@ -58,13 +60,16 @@ export const MobileMenu = styled.div`
   padding: 10px 0;
   z-index: 1; // Asegura que esté por encima de otros elementos
 
-  @media (max-width: 1323px) {
+  @media (max-width: 1342px) {
     position: absolute;
     top: 70px;
   }
 `;
 
-export const Option = styled.div`
+export const Option = styled.div.attrs((props) => ({
+  // Filtrar el prop $isSelected para que no se pase al DOM
+  isSelected: undefined,
+}))`
   color: #dcdedf;
   font-size: 16px;
   font-weight: 550;
@@ -75,8 +80,8 @@ export const Option = styled.div`
 
   transition: color 0.6s;
 
-  ${({ isSelected }) =>
-    isSelected &&
+  ${({ $isSelected }) =>
+    $isSelected &&
     `
     color: #4b9df8;
     font-weight: bold;
@@ -86,17 +91,16 @@ export const Option = styled.div`
     content: "";
     display: block;
     height: 2px;
-    background-color: ${({ isSelected }) =>
-      isSelected ? "#4b9df8" : "transparent"};
+    background-color: ${({ $isSelected }) => ($isSelected ? "#4b9df8" : "transparent")};
     position: absolute;
-    bottom: -5px;
+    bottom: -2px;
     left: 50%;
     width: 0;
     transition: width 0.3s ease, background-color 0.3s;
   }
 
-  ${({ isSelected }) =>
-    isSelected &&
+  ${({ $isSelected }) =>
+    $isSelected &&
     `
     &:after {
       width: 100%;
@@ -114,7 +118,7 @@ export const OptionsContainerLogin = styled.div`
 
 export const OptionLogin = styled.div`
   color: #dcdedf;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   margin: 0 6px;
   cursor: pointer;
@@ -128,7 +132,10 @@ export const VerticalBar = styled.div`
   margin: 0 10px;
 `;
 
-export const OptionsMenuMobile = styled.div`
+export const OptionsMenuMobile = styled.div.attrs((props) => ({
+  // Filtrar el prop $isSelected para que no se pase al DOM
+  isSelected: undefined,
+}))`
   color: #dcdedf;
   font-size: 16px;
   font-weight: 550;
@@ -140,8 +147,8 @@ export const OptionsMenuMobile = styled.div`
 
   transition: color 0.6s;
 
-  ${({ isSelected }) =>
-    isSelected &&
+  ${({ $isSelected }) =>
+    $isSelected &&
     `
     color: #4b9df8;
     font-weight: bold;
@@ -158,8 +165,8 @@ export const OptionsMenuMobile = styled.div`
     transition: width 0.3s ease, background-color 0.3s;
   }
 
-  ${({ isSelected }) =>
-    isSelected &&
+  ${({ $isSelected }) =>
+    $isSelected &&
     `
     &:after {
       width: 100%;
