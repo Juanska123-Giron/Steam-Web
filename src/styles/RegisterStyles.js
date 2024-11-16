@@ -107,6 +107,12 @@ export const Column = styled.div`
     margin-top: 2.4rem;
     text-align: center;
   }
+
+  span {
+    font-size: 12px;
+    color: #ce1c0d;
+    margin-bottom: 12px;
+  }
 `;
 
 export const Input = styled.input`
@@ -157,4 +163,14 @@ export const CountrySelector = styled.select`
     color: white;
     pointer-events: none; /* Hace que la flecha no interfiera con la selección */
   }
+`;
+
+export const Spanner = styled.span`
+  margin: auto;
+  display: ${(props) => (props.showSpanner ? "block" : "none")};
+  color: ${(props) => (props.showSpanner ? "green" : "red")};
+  font-size: 4rem;
+  margin-top: 1rem;
+  transition: opacity 2s ease;
+  opacity: ${(props) => (props.showSpanner ? 1 : 0)};
 `;

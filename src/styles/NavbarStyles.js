@@ -125,9 +125,21 @@ export const OptionLogin = styled.div`
   font-family: "Motiva Sans", "Twemoji", "Noto Sans", Helvetica, sans-serif;
 `;
 
-export const VerticalBar = styled.div`
+export const UserNameLabel = styled.div`
+  color: #dcdedf;
+  font-size: 13.5px;
+  font-weight: 600;
+  margin: 0 6px;
+  cursor: pointer;
+  font-family: "Motiva Sans", "Twemoji", "Noto Sans", Helvetica, sans-serif;
+`;
+
+export const VerticalBar = styled.div.attrs((props) => ({
+  // Filtrar el prop $isOpen para que no se pase al DOM
+  userName: undefined,
+}))`
   width: 1px;
-  height: 20px;
+  height: ${(props) => (props.$userName ? "13px" : "20px")}; // Cambia a block;
   background-color: #dcdedf;
   margin: 0 10px;
 `;

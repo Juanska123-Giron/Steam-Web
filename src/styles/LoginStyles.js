@@ -102,21 +102,27 @@ export const Column = styled.div`
   }
 
   p {
-    font-size: 12px;
+    font-size: 18px !important;
     color: #afafaf;
-    margin-top: 2.4rem;
+
     text-align: center;
   }
 
   span {
     font-size: 12px;
     color: #ce1c0d;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
+`;
+export const SubA = styled.a`
+  text-decoration: none !important;
+  text-align: center !important;
+  margin-top: 0.1rem !important;
 `;
 
 export const Spanner = styled.span`
-  font-size: 12px;
+  text-align: center;
+  font-size: 12.5px;
   color: #ce1c0d;
 `;
 

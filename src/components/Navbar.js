@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import {
   NavbarContainer,
   StyledLogo,
@@ -11,13 +13,28 @@ import {
   MobileMenuButton,
   MobileMenu,
   OptionsMenuMobile,
+  UserNameLabel,
 } from "../styles/NavbarStyles";
 import LogoSvg from "../assets/steamLogo.svg";
 
 function Navbar() {
+  const [userName, setUserName] = useState(localStorage.getItem("userName"));
   const [selectedOption, setSelectedOption] = useState("TIENDA");
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Escuchar cambios en localStorage
+    const handleStorageChange = () => {
+      setUserName(localStorage.getItem("userName"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -36,7 +53,22 @@ function Navbar() {
     navigate("/register");
   };
 
+  const handleLogOutClick = () => {
+    localStorage.removeItem("userName");
+    setUserName(null); // Actualizar el estado inmediatamente
+  };
+
+  const handleUserClick = () => {
+    navigate("/user-info");
+  };
+
   useEffect(() => {
+    AOS.init({
+      duration: 1000, // Duración de la animación en milisegundos
+      easing: "ease", // Efecto de transición
+      once: false, // Las animaciones deben ejecutarse cada vez que el elemento entre en vista
+    });
+
     const handleResize = () => {
       if (window.innerWidth > 1343 && isMobileMenuOpen) {
         setMobileMenuOpen(false);
@@ -44,45 +76,78 @@ function Navbar() {
     };
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [isMobileMenuOpen]);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      AOS.refresh(); // Forzamos la actualización de AOS después de cada cambio de estado
+    };
+  }, [isMobileMenuOpen, selectedOption]);
 
   return (
     <NavbarContainer>
-      <MobileMenuButton onClick={toggleMobileMenu}>☰</MobileMenuButton>
-      <StyledLogo src={LogoSvg} alt="Logo de Steam" onClick={() => navigate("/")} />
-      <OptionsContainer>
+      <MobileMenuButton onClick={toggleMobileMenu} data-aos="fade-right">
+        ☰
+      </MobileMenuButton>
+      <StyledLogo
+        src={LogoSvg}
+        alt="Logo de Steam"
+        onClick={() => navigate("/")}
+        data-aos="zoom-in"
+      />
+      <OptionsContainer data-aos="fade-up">
         {["TIENDA", "COMUNIDAD", "ACERCA DE", "SOPORTE"].map((option) => (
           <Option
             key={option}
             onClick={() => handleOptionClick(option)}
-            $isSelected={selectedOption === option} // Cambiado a $isSelected
+            $isSelected={selectedOption === option}
+            data-aos="zoom-in"
           >
             {option}
           </Option>
         ))}
       </OptionsContainer>
-      <OptionsContainer>
+      <OptionsContainer data-aos="fade-up">
         <OptionsContainerLogin>
-          <OptionLogin onClick={handleLoginClick}>Inicio de sesión</OptionLogin>
-          <VerticalBar />
-          <OptionLogin onClick={handleRegisterClick}>Registrarse</OptionLogin>
+          {userName ? (
+            <>
+              <UserNameLabel onClick={handleUserClick} data-aos="flip-left">
+                {userName}
+              </UserNameLabel>
+              <VerticalBar $userName />
+              <UserNameLabel onClick={handleLogOutClick} data-aos="flip-left">
+                Cerrar
+              </UserNameLabel>
+            </>
+          ) : (
+            <>
+              <OptionLogin onClick={handleLoginClick} data-aos="flip-left">
+                Inicio de sesión
+              </OptionLogin>
+              <VerticalBar />
+              <OptionLogin onClick={handleRegisterClick} data-aos="flip-right">
+                Registrarse
+              </OptionLogin>
+            </>
+          )}
         </OptionsContainerLogin>
       </OptionsContainer>
       <MobileMenu $isOpen={isMobileMenuOpen}>
-        {" "}
-        {/* Cambiado a $isOpen */}
         {["TIENDA", "COMUNIDAD", "ACERCA DE", "SOPORTE"].map((option) => (
           <OptionsMenuMobile
             key={option}
             onClick={() => handleOptionClick(option)}
-            $isSelected={selectedOption === option} // Cambiado a $isSelected
+            $isSelected={selectedOption === option}
+            data-aos="fade-up"
           >
             {option}
           </OptionsMenuMobile>
         ))}
-        <OptionsMenuMobile onClick={handleLoginClick}>Inicio de sesión</OptionsMenuMobile>
-        <OptionsMenuMobile onClick={handleRegisterClick}>Registrarse</OptionsMenuMobile>
+        <OptionsMenuMobile onClick={handleLoginClick} data-aos="zoom-in">
+          Inicio de sesión
+        </OptionsMenuMobile>
+        <OptionsMenuMobile onClick={handleRegisterClick} data-aos="zoom-in">
+          Registrarse
+        </OptionsMenuMobile>
       </MobileMenu>
     </NavbarContainer>
   );
