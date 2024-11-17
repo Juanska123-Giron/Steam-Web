@@ -1,10 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Usar useNavigate
 import { PriceText, DescriptionGameText, SecundaryTitleText } from "../styles/GeneralStyles";
 import { GameItemContainer, GameInfo, ImageContainer, GameItemTextContainer, GameItemImage } from "../styles/MainMenuStyles";
 
-const GameItem = ({ imageUri, name, price, game }) => {
+const GameItem = ({ imageUri, name, price, gameId }) => {
+  const navigate = useNavigate(); // Inicializar useNavigate
+
   const handlePress = () => {
-    console.log("Navigate to game:", game);
+    // Redirigir a la página de detalles del juego con el ID
+    navigate(`/game/${gameId}`);
   };
 
   return (

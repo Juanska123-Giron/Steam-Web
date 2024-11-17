@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import GameItem from "../components/GameItem";
 import Tag from "../components/Tag";
+import { Container } from "../styles/GeneralStyles";
 
 function MainMenu() {
   const navigate = useNavigate();
@@ -75,44 +76,42 @@ function MainMenu() {
     setSelectedCategory((prev) => (prev === categoryId ? null : categoryId));
   };
 
-  if (!token) return null; // Evita renderizar hasta que el token esté validado
+  if (!token) return null;
 
   return (
     <div>
       <Navbar />
-      <header>
-        <h1>Main Menu</h1>
-      </header>
+      <Container>
+        {isLoading && <p>Cargando...</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {isLoading && <p>Cargando...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      {!isLoading && !error && (
-        <>
-          <div className="categories">
-            {categories.map((category) => (
-              <Tag
-                key={category._id}
-                onClick={() => toggleCategory(category._id)}
-                isSelected={selectedCategory === category._id}
-              >
-                {category.category_name}
-              </Tag>
-            ))}
-          </div>
-          <div className="games">
-            {games.map((game) => (
-              <GameItem
-                key={game._id}
-                imageUri={game.photos[0]}
-                name={game.game_name}
-                price={`$${Number(game.price).toLocaleString("es-ES")}`}
-                game={game}
-              />
-            ))}
-          </div>
-        </>
-      )}
+        {!isLoading && !error && (
+          <>
+            <div className="categories">
+              {categories.map((category) => (
+                <Tag
+                  key={category._id}
+                  onClick={() => toggleCategory(category._id)}
+                  isSelected={selectedCategory === category._id}
+                >
+                  {category.category_name}
+                </Tag>
+              ))}
+            </div>
+            <div className="games">
+              {games.map((game) => (
+                <GameItem
+                  key={game._id}
+                  imageUri={game.photos[0]}
+                  name={game.game_name}
+                  price={`$${Number(game.price).toLocaleString("es-ES")}`}
+                  gameId={game._id} // Pasamos solo el ID del juego
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </Container>
     </div>
   );
 }
