@@ -117,7 +117,7 @@ function Register() {
 
     try {
       console.log("FormData: ", formData);
-      const response = await axios.post("https://prod.supersteam.pro/api/users", formData);
+      const response = await axios.post("http://localhost:3000/api/users", formData);
 
       if (response && response.data) {
         setServerResponse("Registro exitoso, redirigiendo...");
