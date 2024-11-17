@@ -20,10 +20,13 @@ export const TagButton = styled.button`
 `;
 
 export const TagContainer = styled.div`
+  margin-top: -55px;
   height: 150px;
   display: flex;
   flex-wrap: wrap;
   overflow-y: auto;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const TagList = styled.div`
@@ -31,4 +34,6 @@ export const TagList = styled.div`
   align-items: center;
   flex-direction: row;
   gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 `;

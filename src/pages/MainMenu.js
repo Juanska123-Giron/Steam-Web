@@ -5,6 +5,8 @@ import Navbar from "../components/Navbar";
 import GameItem from "../components/GameItem";
 import Tag from "../components/Tag";
 import { Container } from "../styles/GeneralStyles";
+import { TagContainer, TagList } from "../styles/components/TagStyles";
+import { GameList } from "../styles/MainMenuStyles";
 
 function MainMenu() {
   const navigate = useNavigate();
@@ -87,18 +89,21 @@ function MainMenu() {
 
         {!isLoading && !error && (
           <>
-            <div className="categories">
-              {categories.map((category) => (
-                <Tag
-                  key={category._id}
-                  onClick={() => toggleCategory(category._id)}
-                  isSelected={selectedCategory === category._id}
-                >
-                  {category.category_name}
-                </Tag>
-              ))}
-            </div>
-            <div className="games">
+            <TagContainer>
+              <TagList>
+                {categories.map((category) => (
+                  <Tag
+                    key={category._id}
+                    onClick={() => toggleCategory(category._id)}
+                    isSelected={selectedCategory === category._id}
+                  >
+                    {category.category_name}
+                  </Tag>
+                ))}
+              </TagList>
+            </TagContainer>
+
+            <GameList>
               {games.map((game) => (
                 <GameItem
                   key={game._id}
@@ -108,7 +113,7 @@ function MainMenu() {
                   gameId={game._id} // Pasamos solo el ID del juego
                 />
               ))}
-            </div>
+            </GameList>
           </>
         )}
       </Container>

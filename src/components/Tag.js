@@ -1,9 +1,10 @@
 import React from "react";
 import { TagButton, TagContainer, TagList } from "../styles/components/TagStyles";
+import { ButtonText } from "../styles/GeneralStyles";
 
 const Tag = ({ children, onClick, isSelected }) => (
   <TagButton isSelected={isSelected} onClick={onClick}>
-    {children}
+    <ButtonText>{children}</ButtonText> {/* Aquí envolvemos el contenido con ButtonText */}
   </TagButton>
 );
 

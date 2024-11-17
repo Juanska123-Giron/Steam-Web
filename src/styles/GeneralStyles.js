@@ -1,61 +1,65 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
-  background-color: #1A2A3D;
+  min-height: 100vh;
   padding-left: 16px;
   padding-right: 16px;
   padding-top: 40px;
+  margin: 0;
+  background-color: #1a2a3d;
 `;
 
 export const TitleTextView = styled.h1`
   font-size: 18px;
-  color: #FFF;
+  color: #fff;
   margin-bottom: 10px;
   font-weight: 600;
 `;
 
 export const SecundaryTitleText = styled.h2`
   font-size: 16px;
-  color: #FFF;
+  color: #fff;
   margin-bottom: 4px;
   font-weight: 600;
 `;
 
 export const ButtonText = styled.span`
   font-size: 14px;
-  color: #FFF;
+  color: #fff;
   font-weight: 600;
 `;
 
 export const PriceText = styled.span`
-  color: #FFF;
+  color: #fff;
   font-size: 18px;
   font-weight: 300;
 `;
 
 export const DescriptionGameText = styled.p`
   font-size: 14px;
-  color: #7B8D9D;
+  color: #7b8d9d;
   margin-bottom: 4px;
   font-weight: 300;
 `;
 
 export const FormText = styled.span`
   font-size: 14px;
-  color: #FFF;
+  color: #fff;
   font-weight: 300;
 `;
 
 export const DeleteText = styled.span`
   font-size: 14px;
-  color: #D9D9D9;
+  color: #d9d9d9;
   font-weight: 300;
   text-decoration-line: underline;
 `;
 
 export const SmallButton = styled.button`
-  background-color: #77B322;
+  background-color: #77b322;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 20px;
@@ -72,7 +76,7 @@ export const ButtonGroup = styled.div`
 `;
 
 export const GrayButton = styled.button`
-  background-color: #616E78;
+  background-color: #616e78;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 20px;
@@ -94,7 +98,7 @@ export const BlueButton = styled.button`
 `;
 
 export const RedButton = styled.button`
-  background-color: #CF352B;
+  background-color: #cf352b;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 20px;
@@ -105,7 +109,7 @@ export const RedButton = styled.button`
 `;
 
 export const InputBox = styled.input`
-  background-color: #1A1E29;
+  background-color: #1a1e29;
   color: #fff;
   padding: 10px;
   border-radius: 5px;

@@ -18,6 +18,9 @@ export const GameItemContainer = styled.div`
   padding-bottom: 12px;
   background-color: #243447;
   border-radius: 10px;
+  width: 600px;
+  margin: 0 auto;
+  margin-bottom: 23px;
 `;
 
 export const GameInfo = styled.div`
@@ -26,8 +29,8 @@ export const GameInfo = styled.div`
 `;
 
 export const ImageContainer = styled.div`
-  width: 72px;
-  height: 50px;
+  width: 144px;
+  height: 100px;
   border-radius: 8px;
   overflow: hidden;
   margin-right: 16px;
