@@ -8,7 +8,7 @@ const GameItem = ({ imageUri, name, price, gameId }) => {
 
   const handlePress = () => {
     // Redirigir a la página de detalles del juego con el ID
-    navigate(`/game/${gameId}`);
+    navigate(`${gameId}`);
   };
 
   return (
