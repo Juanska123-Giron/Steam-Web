@@ -115,7 +115,7 @@ function Navbar() {
               </UserNameLabel>
               <VerticalBar $userName />
               <UserNameLabel onClick={handleLogOutClick} data-aos="flip-left">
-                Cerrar
+                Cerrar Sesión
               </UserNameLabel>
             </>
           ) : (
