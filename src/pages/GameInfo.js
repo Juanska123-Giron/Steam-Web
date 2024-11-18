@@ -32,7 +32,7 @@ const GameInfo = () => {
   const { games } = useGames();
   const { addToCart } = useCart();
   const [isModalVisible, setModalVisible] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0); // Estado para el índice de la imagen
+  const [currentIndex, setCurrentIndex] = useState(1);
 
   useEffect(() => {
     console.log("Games data:", games);
