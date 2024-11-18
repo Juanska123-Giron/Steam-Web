@@ -26,19 +26,20 @@ import {
 } from "../styles/GeneralStyles";
 import { GameImage } from "../styles/components/AddToCartPopUpStyles";
 
-const Cart = ({ navigation }) => {
-  const { cartItems, removeFromCart } = useCart(); // Obtén el estado del carrito y la función para eliminar
+const Cart = () => {
+  const { cartItems, removeFromCart } = useCart();
   const navigate = useNavigate();
 
   // Calcular el total
   const totalPrice = cartItems.reduce((sum, game) => sum + game.price, 0);
 
   const handleContinueShopping = () => {
-    navigate("/"); // Cambia "MainMenu" por la ruta correspondiente
+    navigate("/");
   };
 
   const handlePayment = () => {
-    navigate("/payment", { state: { totalPrice } }); // Usando "state" para pasar el totalPrice
+    console.log("Total Price:", totalPrice); // Agregar mensaje de depuración
+    navigate("/payment", { state: { totalPrice } });
   };
 
   return (
@@ -52,22 +53,14 @@ const Cart = ({ navigation }) => {
             <DescriptionGameText>Tu carrito está vacío.</DescriptionGameText>
           ) : (
             <CartLayout>
-              {/* Columna izquierda - Juegos */}
               <LeftColumn>
                 {cartItems.map((game, index) => (
                   <GameContainer key={index}>
-                    {/* Imagen del juego */}
                     {game.photos && game.photos.length > 0 && (
                       <GameImage src={game.photos[0]} alt={game.game_name} />
                     )}
-
-                    {/* Nombre del juego */}
                     <SecundaryTitleText>{game.game_name}</SecundaryTitleText>
-
-                    {/* Precio */}
                     <FormText>{`$${(game.price / 1000).toFixed(3)}`}</FormText>
-
-                    {/* Botón para eliminar */}
                     <RemoveButtonContainer>
                       <button onClick={() => removeFromCart(index)}>
                         Eliminar
@@ -77,7 +70,6 @@ const Cart = ({ navigation }) => {
                 ))}
               </LeftColumn>
 
-              {/* Columna derecha - Total y botones */}
               <RightColumn>
                 <TotalAndPayment>
                   <TotalRow>
