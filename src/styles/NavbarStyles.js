@@ -132,6 +132,7 @@ export const UserNameLabel = styled.div`
   margin: 0 6px;
   cursor: pointer;
   font-family: "Motiva Sans", "Twemoji", "Noto Sans", Helvetica, sans-serif;
+  text-transform: uppercase;
 `;
 
 export const VerticalBar = styled.div.attrs((props) => ({

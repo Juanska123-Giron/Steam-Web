@@ -84,7 +84,7 @@ function MainMenu() {
     <div>
       <Navbar />
       <Container>
-        {isLoading && <p>Cargando...</p>}
+        {isLoading && <p></p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {!isLoading && !error && (
