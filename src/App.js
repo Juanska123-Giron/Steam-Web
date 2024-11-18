@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MainMenu from "./pages/MainMenu";
 import GameInfo from "./pages/GameInfo";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<MainMenu />} />
             <Route path="/:gameId" element={<GameInfo/>} />
+            <Route path="/cart" element={<Cart />} />
           </Routes>
         </Router>
       </CartProvider>

@@ -10,6 +10,7 @@ export const Container = styled.div`
   padding-top: 40px;
   margin: 0;
   background-color: #1a2a3d;
+  height: auto;
 `;
 
 export const TitleTextView = styled.h1`
