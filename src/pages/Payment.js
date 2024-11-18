@@ -1,155 +1,150 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import Navbar from "../components/Navbar";
 import {
   Container,
   TitleTextView,
   FormText,
-  BlueButton,
   ButtonText,
+  BlueButton,
+  InputBox,
 } from "../styles/GeneralStyles";
-import { PaymentForm, PaymentWrapper } from "../styles/PaymentStyles";
 
 const Payment = () => {
-  const stripe = useStripe();
-  const elements = useElements();
   const { cartItems, setCartItems } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const totalPrice = location.state?.totalPrice || 0;
+
+  const [formData, setFormData] = useState({
+    cardNumber: "",
+    expiryDate: "",
+    cvv: "",
+  });
+
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const totalPrice = location.state?.totalPrice;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-  useEffect(() => {
-    console.log("Total Price from location state:", totalPrice); // Agregar mensaje de depuración
-  }, [totalPrice]);
-
-  const handlePayment = async (event) => {
-    event.preventDefault();
-    setIsProcessing(true);
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    const cardElement = elements.getElement(CardElement);
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+  
+    let paymentResponse; // Mover la declaración fuera del bloque try
+    let gameIds = []; // Inicializar gameIds aquí
+    let token = ""; // Inicializar token aquí
+  
+    console.log("Datos del formulario:", formData); // Aquí imprimimos los datos del formulario
+  
     try {
-      const { paymentMethod } = await stripe.createPaymentMethod({
-        type: "card",
-        card: cardElement,
-      });
-
-      const token = localStorage.getItem("authToken"); // Obtener el token de autenticación
-
-      console.log("Payment Method ID:", paymentMethod.id); // Mensaje de depuración
-      console.log("Total Price:", totalPrice); // Mensaje de depuración
-
-      // Eliminar duplicados de gameIds
-      const gameIds = [...new Set(cartItems.map((game) => game._id))];
-      console.log("Game IDs:", gameIds); // Mensaje de depuración
-
-      const response = await axios.post(
+      token = localStorage.getItem("authToken"); // Get the token from localStorage
+  
+      if (!token) {
+        setError("No se encontró el token de autenticación.");
+        setIsLoading(false);
+        return;
+      }
+  
+      // Remove duplicate game IDs
+      gameIds = [...new Set(cartItems.map((game) => game._id))];
+      console.log("Game IDs being sent:", gameIds); // Log the game IDs
+  
+      // Procesar el pago
+      paymentResponse = await axios.post(
         "https://prod.supersteam.pro/api/payment-cards/process",
         {
-          payment_method_id: paymentMethod.id,
+          cardNumber: formData.cardNumber,
+          expiryDate: formData.expiryDate,
+          cvv: formData.cvv,
           amount: totalPrice,
-          gameIds: gameIds, // Incluir gameIds en la solicitud
+          gameIds, // Include gameIds in the request body
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Incluir el token en los encabezados
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
-      console.log("Payment Response:", response.data); // Mensaje de depuración
-
-      if (response.data.clientSecret) {
-        const { clientSecret } = response.data;
-
-        const result = await stripe.confirmCardPayment(clientSecret, {
-          payment_method: paymentMethod.id,
-        });
-
-        if (result.error) {
-          console.error("Error confirming card payment:", result.error);
-          setError("Error en el procesamiento del pago. Inténtalo de nuevo.");
-        } else if (
-          result.paymentIntent &&
-          result.paymentIntent.status === "succeeded"
-        ) {
-          const addToLibraryResponse = await axios.post(
-            "https://prod.supersteam.pro/api/games/add-to-library", // Verifica que esta URL sea correcta
-            {
-              games: gameIds,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`, // Incluir el token en los encabezados
-              },
-            }
-          );
-
-          console.log("Add to Library Response:", addToLibraryResponse.data); // Mensaje de depuración
-
-          setCartItems([]);
-          localStorage.removeItem("cartItems");
-          navigate("/success"); // Redirigir a /success después del pago exitoso
-        }
-      } else {
-        setError("Error en el procesamiento del pago. Inténtalo de nuevo.");
-      }
+      console.log(paymentResponse.data); // Agregar para depurar la respuesta
     } catch (error) {
-      console.error("Error processing payment:", error);
-      if (error.response) {
-        console.error("Server Response:", error.response.data); // Mensaje de depuración para la respuesta del servidor
-
-        // Agregar manejo de error más detallado para el código 404
-        if (error.response.status === 404) {
-          setError(
-            "No se pudo encontrar el servicio de adición a la biblioteca. Intenta más tarde."
-          );
-        } else {
-          setError("Error en el procesamiento del pago. Inténtalo de nuevo.");
+      console.error("Payment error:", error.response ? error.response.data : error.message);
+      setError("Error en el proceso de pago. Inténtalo de nuevo.");
+      setIsLoading(false);
+      return; // Terminar la ejecución si hay un error
+    }
+  
+    if (paymentResponse.data.success) {
+      // Agregar juegos a la biblioteca del usuario
+      const addToLibraryResponse = await axios.post(
+        "https://prod.supersteam.pro/api/games/add-to-library",
+        {
+          games: gameIds,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the headers
+          },
         }
+      );
+  
+      if (addToLibraryResponse.data.success) {
+        // Limpiar el carrito y redirigir al usuario
+        setCartItems([]);
+        localStorage.removeItem("cartItems");
+        navigate("/library");
       } else {
-        setError("Error en el procesamiento del pago. Inténtalo de nuevo.");
+        setError("Error al agregar juegos a la biblioteca.");
       }
-    } finally {
-      setIsProcessing(false);
+    } else {
+      setError("Error al procesar el pago.");
     }
   };
+  
+  
+  
 
   return (
     <>
       <Navbar />
       <Container>
-        <PaymentWrapper>
-          <TitleTextView>Pago</TitleTextView>
-          <PaymentForm onSubmit={handlePayment}>
-            {totalPrice ? (
-              <>
-                <FormText>Total a pagar: ${totalPrice / 1000}</FormText>
-                <CardElement />
-                {error && <p style={{ color: "red" }}>{error}</p>}
-                <BlueButton type="submit" disabled={isProcessing || !stripe}>
-                  <ButtonText>
-                    {isProcessing ? "Procesando..." : "Pagar"}
-                  </ButtonText>
-                </BlueButton>
-              </>
-            ) : (
-              <p style={{ color: "red" }}>
-                No se pudo obtener el total a pagar.
-              </p>
-            )}
-          </PaymentForm>
-        </PaymentWrapper>
+        <TitleTextView>Pago</TitleTextView>
+        <form onSubmit={handleSubmit}>
+          <FormText>Número de tarjeta</FormText>
+          <InputBox
+            type="text"
+            name="cardNumber"
+            value={formData.cardNumber}
+            onChange={handleChange}
+            required
+          />
+          <FormText>Fecha de expiración</FormText>
+          <InputBox
+            type="text"
+            name="expiryDate"
+            value={formData.expiryDate}
+            onChange={handleChange}
+            required
+          />
+          <FormText>CVV</FormText>
+          <InputBox
+            type="text"
+            name="cvv"
+            value={formData.cvv}
+            onChange={handleChange}
+            required
+          />
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          <BlueButton type="submit" disabled={isLoading}>
+            <ButtonText>{isLoading ? "Procesando..." : "Pagar"}</ButtonText>
+          </BlueButton>
+        </form>
       </Container>
     </>
   );
