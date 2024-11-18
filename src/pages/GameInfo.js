@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useGames } from "../context/GameContext"; // Importamos el hook del contexto
+import { useGames } from "../context/GameContext";
 import AddToCartPopup from "../components/AddToCartPopUp";
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
@@ -21,17 +21,22 @@ import {
   PriceBox,
   SystemRequirements,
   TitleAndIcon,
+  InfoSection,
+  LeftSection,
+  RightSection,
+  CarouselButton,
 } from "../styles/GameInfoStyles";
 
 const GameInfo = () => {
   const { gameId } = useParams();
-  const { games } = useGames(); // Usamos el contexto de juegos
+  const { games } = useGames();
   const { addToCart } = useCart();
   const [isModalVisible, setModalVisible] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0); // Estado para el índice de la imagen
 
   useEffect(() => {
-    console.log("Games data:", games); // Verifica si games llega correctamente
-    console.log("GameId from params:", gameId); // Verifica el gameId
+    console.log("Games data:", games);
+    console.log("GameId from params:", gameId);
   }, [games, gameId]);
 
   if (!games || games.length === 0) {
@@ -47,60 +52,80 @@ const GameInfo = () => {
   const requirements = game.id_requirements || {};
 
   const handleAddToCart = () => {
-    addToCart(game); // Usa addToCart del contexto
-    setModalVisible(true); // Muestra el pop-up
+    addToCart(game);
+    setModalVisible(true);
+  };
+
+  // Funciones para cambiar las imágenes en el carrusel
+  const goToPreviousImage = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? game.photos.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToNextImage = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === game.photos.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
   return (
     <div>
       <Navbar />
       <Container>
-        <MainImage src={game.photos[0]} alt={game.game_name} />
-        <GameInfoContainer>
-          <TitleTextView>{game.game_name}</TitleTextView>
-          <DescriptionGameText>
-            Desarrollador: {game.developer}
-          </DescriptionGameText>
-          <DescriptionGameText>
-            Lanzamiento:{" "}
-            {new Date(game.release_date).toLocaleDateString("es-ES")}
-          </DescriptionGameText>
-          <DescriptionGameText>
-            Categoría: {game.id_category.category_name}
-          </DescriptionGameText>
-        </GameInfoContainer>
-        <DescriptionGameText>{game.description}</DescriptionGameText>
+        <InfoSection>
+          {/* Columna izquierda con las imágenes del juego y sección de comprar */}
+          <LeftSection>
+            {/* Carrusel de imágenes */}
+            <CarouselContainer>
+              <CarouselButton onClick={goToPreviousImage}>←</CarouselButton>
+              <CarouselImage
+                src={game.photos[currentIndex]}
+                alt={`Imagen ${currentIndex + 1}`}
+              />
+              <CarouselButton onClick={goToNextImage}>→</CarouselButton>
+            </CarouselContainer>
 
-        {/* Carrusel de imágenes */}
-        <CarouselContainer>
-          {game.photos.slice(1).map((photo, index) => (
-            <CarouselImage
-              key={index}
-              src={photo}
-              alt={`Imagen ${index + 1}`}
-            />
-          ))}
-        </CarouselContainer>
+            {/* Sección de comprar */}
+            <BuySection>
+              <TitleAndIcon>
+                <TitleTextView>
+                  Comprar {game.game_name.toUpperCase()}
+                </TitleTextView>
+              </TitleAndIcon>
+              <PriceBox>
+                <PriceText>{`$${(game.price / 1000).toFixed(3)}`}</PriceText>
+              </PriceBox>
+              <SmallButton onClick={handleAddToCart}>
+                <ButtonText>Añadir al carrito</ButtonText>
+              </SmallButton>
+              <AddToCartPopup
+                visible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                game={game}
+              />
+            </BuySection>
+          </LeftSection>
 
-        {/* Comprar sección */}
-        <BuySection>
-          <TitleAndIcon>
-            <TitleTextView>
-              Comprar {game.game_name.toUpperCase()}
-            </TitleTextView>
-          </TitleAndIcon>
-          <PriceBox>
-            <PriceText>{`$${(game.price / 1000).toFixed(3)}`}</PriceText>
-          </PriceBox>
-          <SmallButton onClick={handleAddToCart}>
-            <ButtonText>Añadir al carro</ButtonText>
-          </SmallButton>
-          <AddToCartPopup
-            visible={isModalVisible}
-            onClose={() => setModalVisible(false)}
-            game={game}
-          />
-        </BuySection>
+          {/* Columna derecha con la imagen principal y detalles */}
+          <RightSection>
+            <MainImage src={game.photos[0]} alt={game.game_name} />
+            <TitleTextView>{game.game_name}</TitleTextView>
+            <GameInfoContainer>
+              <DescriptionGameText>
+                Desarrollador: {game.developer}
+              </DescriptionGameText>
+              <DescriptionGameText>
+                Lanzamiento:{" "}
+                {new Date(game.release_date).toLocaleDateString("es-ES")}
+              </DescriptionGameText>
+              <DescriptionGameText>
+                Categoría: {game.id_category.category_name}
+              </DescriptionGameText>
+            </GameInfoContainer>
+            <DescriptionGameText>{game.description}</DescriptionGameText>
+          </RightSection>
+        </InfoSection>
 
         {/* Requisitos del sistema */}
         <SystemRequirements>

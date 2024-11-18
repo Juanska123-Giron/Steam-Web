@@ -60,11 +60,17 @@ export const DeleteText = styled.span`
 
 export const SmallButton = styled.button`
   background-color: #77b322;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
+  border: none;
+  color: white;
+  padding: 10px 20px;
   border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+
+  &:hover {
+    background-color: #77b322;
+  }
 `;
 
 export const ButtonGroup = styled.div`
