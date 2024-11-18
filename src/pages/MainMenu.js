@@ -17,6 +17,7 @@ function MainMenu() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Verificar token de autenticación
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken");
     if (!storedToken) {
@@ -26,6 +27,7 @@ function MainMenu() {
     }
   }, [navigate]);
 
+  // Obtener categorías de juegos
   useEffect(() => {
     if (!token) return;
 
@@ -52,16 +54,13 @@ function MainMenu() {
     fetchCategories();
   }, [token]);
 
+  // Obtener juegos filtrados por categoría
   useEffect(() => {
     const fetchGames = async () => {
       setIsLoading(true);
       try {
-        const categoryQuery = selectedCategory
-          ? `?category=${selectedCategory}`
-          : "";
-        const response = await axios.get(
-          `http://localhost:3000/api/games/${categoryQuery}`
-        );
+        const categoryQuery = selectedCategory ? `?category=${selectedCategory}` : "";
+        const response = await axios.get(`http://localhost:3000/api/games/${categoryQuery}`);
         setGames(response.data);
       } catch (error) {
         console.error("Error fetching games:", error);
@@ -74,10 +73,12 @@ function MainMenu() {
     fetchGames();
   }, [selectedCategory]);
 
+  // Alternar la categoría seleccionada
   const toggleCategory = (categoryId) => {
     setSelectedCategory((prev) => (prev === categoryId ? null : categoryId));
   };
 
+  // Verificar si los juegos están disponibles y manejar el estado de carga
   if (!token) return null;
 
   return (
