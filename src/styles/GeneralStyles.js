@@ -77,9 +77,10 @@ export const ButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-self: center;
   width: 210px;
+  margin: 0 auto;
 `;
+
 
 export const GrayButton = styled.button`
   background-color: #616e78;

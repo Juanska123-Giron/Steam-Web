@@ -53,7 +53,8 @@ const GameInfo = () => {
 
   const handleAddToCart = () => {
     addToCart(game);
-    setModalVisible(true);
+    setModalVisible(true); // Cambiar estado a true
+    console.log("Modal visible: ", true); // Comprobar si se actualiza
   };
 
   // Funciones para cambiar las imágenes en el carrusel

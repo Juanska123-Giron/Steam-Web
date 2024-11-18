@@ -21,26 +21,19 @@ const AddToCartPopup = ({ visible, onClose, game }) => {
   const handleViewCart = () => {
     navigate("/cart", { state: { cartItems: [game] } });
   };
+  console.log("Modal visible inside AddToCartPopup:", visible);
 
-  if (!visible) return null;
+  if (!visible) return null; // Si no está visible, no se renderiza el modal
 
   return (
-    <ModalContainer>
+    <ModalContainer visible={visible}>
       <ModalView>
         <TitleTextView>¡Añadido a tu carro!</TitleTextView>
-
-        {/* Imagen del juego */}
         {game.photos && game.photos.length > 0 && (
           <GameImage src={game.photos[0]} alt={game.game_name} />
         )}
-
-        {/* Nombre del juego */}
         <SecundaryTitleText>{game.game_name}</SecundaryTitleText>
-
-        {/* Precio */}
         <FormText>{`$${(game.price / 1000).toFixed(3)}`}</FormText>
-
-        {/* Botones */}
         <ButtonGroup>
           <GrayButton onClick={onClose}>
             <ButtonText>Seguir comprando</ButtonText>
