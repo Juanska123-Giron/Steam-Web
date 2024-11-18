@@ -9,7 +9,7 @@ export const CartWrapper = styled.div`
   gap: 20px;
   min-height: 100vh;
   box-sizing: border-box;
-  padding-top: 70px; /* Ajusta según la altura de tu navbar */
+  padding-top: 1px; /* Ajusta según la altura de tu navbar */
   overflow: auto;
 `;
 

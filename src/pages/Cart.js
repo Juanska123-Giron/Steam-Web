@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import Navbar from "../components/Navbar";
 import {
@@ -27,16 +28,17 @@ import { GameImage } from "../styles/components/AddToCartPopUpStyles";
 
 const Cart = ({ navigation }) => {
   const { cartItems, removeFromCart } = useCart(); // Obtén el estado del carrito y la función para eliminar
+  const navigate = useNavigate();
 
   // Calcular el total
   const totalPrice = cartItems.reduce((sum, game) => sum + game.price, 0);
 
   const handleContinueShopping = () => {
-    navigation.navigate("MainMenu");
+    navigate("/"); // Cambia "MainMenu" por la ruta correspondiente
   };
 
   const handlePayment = () => {
-    navigation.navigate("PaymentScreen", { totalPrice }); // Navega a la pantalla de pago y pasa el monto total
+    navigate("/payment", { state: { totalPrice } }); // Usando "state" para pasar el totalPrice
   };
 
   return (
