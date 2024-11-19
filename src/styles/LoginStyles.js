@@ -102,7 +102,7 @@ export const Column = styled.div`
   }
 
   p {
-    font-size: 18px !important;
+    font-size: 12px !important;
     color: #afafaf;
 
     text-align: center;

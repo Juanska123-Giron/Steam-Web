@@ -94,7 +94,7 @@ function Login() {
     setShowSpanner(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/api/users/login", formData);
+      const response = await axios.post(`${process.env.REACT_APP_API}/api/users/login`, formData);
 
       if (response && response.data && response.data.token) {
         // Guardar el token en localStorage
@@ -105,21 +105,27 @@ function Login() {
         navigate("/"); // Asegúrate de tener la ruta '/dashboard' configurada en tu app
       } else {
         setServerResponse("Error en el inicio de sesión. Inténtalo de nuevo.");
+        setTimeout(() => {
+          setShowSpanner(false);
+        }, 4500);
       }
     } catch (error) {
       if (error.response && error.response.data && error.response.data.msg) {
         setServerResponse(error.response.data.msg);
+        setTimeout(() => {
+          setShowSpanner(false);
+        }, 4500);
       } else {
         setServerResponse("Error en el inicio de sesión. Inténtalo de nuevo.");
+        setTimeout(() => {
+          setShowSpanner(false);
+        }, 4500);
       }
     }
-
-    setTimeout(() => {
-      setShowSpanner(false);
-    }, 9500);
   };
 
-  const isButtonDisabled = validationErrors.email || validationErrors.password;
+  const isButtonDisabled =
+    !formData.email || !formData.password || validationErrors.email || validationErrors.password;
 
   return (
     <>

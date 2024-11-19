@@ -95,10 +95,10 @@ export const Column = styled.div`
   }
 
   a {
-    font-size: 12px;
-    color: #afafaf;
-    text-decoration: underline;
-    margin-top: 1rem;
+    font-size: 12px !important;
+    color: #afafaf !important;
+    text-decoration: underline !important;
+    margin-top: 1rem !important;
   }
 
   p {
