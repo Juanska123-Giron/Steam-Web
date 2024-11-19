@@ -11,9 +11,12 @@ import MainMenu from "./pages/MainMenu";
 import GameInfo from "./pages/GameInfo";
 import Cart from "./pages/Cart";
 import Payment from "./pages/Payment";
+import Success from "./pages/Success";
 
 // Inicializa Stripe con tu clave pública
-const stripePromise = loadStripe('pk_test_51QAiyrHJvexuiPAUh3pXrY7BKMJDfeAa0xnVYDDt6n9s9fSEtAM0ljYMNqiR89g8fbS69QIX17MNUikmX4LnOHGS00lWnWIxOQ');
+const stripePromise = loadStripe(
+  "pk_test_51QAiyrHJvexuiPAUh3pXrY7BKMJDfeAa0xnVYDDt6n9s9fSEtAM0ljYMNqiR89g8fbS69QIX17MNUikmX4LnOHGS00lWnWIxOQ"
+);
 
 function App() {
   return (
@@ -35,6 +38,7 @@ function App() {
                 </Elements>
               }
             />
+            <Route path="/success" element={<Success />} />
           </Routes>
         </Router>
       </CartProvider>

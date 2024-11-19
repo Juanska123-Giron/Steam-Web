@@ -50,6 +50,7 @@ export const FormText = styled.span`
   font-size: 14px;
   color: #fff;
   font-weight: 300;
+  margin-bottom: 20px;
 `;
 
 export const DeleteText = styled.span`
@@ -80,6 +81,7 @@ export const ButtonGroup = styled.div`
   justify-content: center;
   width: 210px;
   margin: 0 auto;
+  margin-top: 30px;
 `;
 
 
