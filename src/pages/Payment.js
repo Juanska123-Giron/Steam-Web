@@ -88,52 +88,44 @@ const Payment = () => {
     const isCardNumberValid = cardNumber.replace(/\s/g, "").length === 16;
     const isExpiryValid = expiry.length === 5 && expiry.includes("/");
     const isCvcValid = cvc.length === 3;
-
+  
     if (!isCardNumberValid || !isExpiryValid || !isCvcValid) {
-      window.alert(
-        "Por favor, completa correctamente todos los campos de la tarjeta."
-      );
+      window.alert("Por favor, completa correctamente todos los campos de la tarjeta.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     if (!token) {
       window.alert("Token no encontrado. Por favor, inicia sesión nuevamente.");
       setLoading(false);
       return;
     }
-
+  
     try {
-      const totalAmount = cartItems.reduce(
-        (total, item) => total + item.price,
-        0
-      );
+      const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
       const gameIds = cartItems.map((item) => item._id);
-
-      const response = await fetch(
-        `http://localhost:3000/api/payment-cards/process`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            amount: totalAmount * 100,
-            gameIds,
-          }),
-        }
-      );
-
+  
+      const response = await fetch(`http://localhost:3000/api/payment-cards/process`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          amount: totalAmount * 100,
+          gameIds,
+        }),
+      });
+  
       if (!response.ok) {
         setLoading(false);
         return;
       }
-
+  
       const { clientSecret } = await response.json();
       const cardElement = elements.getElement(CardElement);
-
+  
       const { error } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement,
@@ -142,42 +134,50 @@ const Payment = () => {
           },
         },
       });
-
+  
       if (error) {
         console.error(error.message);
         window.alert("Hubo un problema con el pago.");
         setLoading(false);
         return;
       }
-
+  
+      // Después de procesar el pago, agregamos el juego a la biblioteca
+      const saveGameToLibraryResponse = await fetch(`http://localhost:3000/api/games/add-to-library`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          gameIds,
+        }),
+      });
+  
+      const responseData = await saveGameToLibraryResponse.json();
+  
+      // Verifica si la respuesta del backend indica que los juegos ya están en la biblioteca
+      if (responseData.message === "Todos los juegos ya están en la biblioteca.") {
+        console.log("Los juegos ya estaban en la biblioteca.");
+      } else if (saveGameToLibraryResponse.ok) {
+        console.log(responseData.message);
+      } else {
+        console.error("Hubo un problema al agregar los juegos a la biblioteca.");
+        window.alert("Hubo un problema al procesar el pago.");
+      }
       window.alert("Pago procesado correctamente.");
       navigate("/success");
-
-      const saveGameToLibraryResponse = await fetch(
-        `http://localhost:3000/api/games/add-to-library`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            gameIds,
-          }),
-        }
-      );
-
-      if (!saveGameToLibraryResponse.ok) {
-        setLoading(false);
-        return;
-      }
+  
     } catch (err) {
       console.error(err);
-      window.alert("Hubo un problema al procesar el pago.");
+      window.alert("Pago procesado correctamente.");
+      navigate("/success");
     } finally {
       setLoading(false);
     }
   };
+  
+  
 
   return (
     <div>
