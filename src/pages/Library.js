@@ -30,11 +30,14 @@ function Library() {
     const fetchLibrary = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get("https://prod.supersteam.pro/api/library/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "https://prod.supersteam.pro/api/library/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         setGames(response.data.games || []); // Asegúrate de que el formato de los datos sea el esperado
       } catch (error) {
@@ -52,19 +55,19 @@ function Library() {
     <div>
       <Navbar />
       <Container>
-        {isLoading && <div>Loading...</div>} {/* Aquí puedes agregar un componente de carga si lo prefieres */}
+        {isLoading && <div>Loading...</div>}{" "}
+        {/* Aquí puedes agregar un componente de carga si lo prefieres */}
         {error && <p style={{ color: "red" }}>{error}</p>}
-
         {!isLoading && !error && (
           <GameList>
             {games.length > 0 ? (
               games.map((game) => (
                 <GameItemLibrary
-                  key={game._id}
-                  imageUri={game.photos ? game.photos[0] : ''}
+                  key={game.gameId} // Cambié esto para usar gameId
+                  imageUri={game.photos ? game.photos[0] : ""}
                   name={game.title}
-                  game={game}
-                  onPress={() => navigate(`/game/${game._id}`)} // Asegúrate de que el route sea correcto
+                  gameId={game.gameId} // Pasando gameId en lugar de _id
+                  onPress={() => navigate(`/game/${game.gameId}`)} // Usando gameId para la navegación
                 />
               ))
             ) : (

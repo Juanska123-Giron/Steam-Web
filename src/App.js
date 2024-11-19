@@ -13,6 +13,7 @@ import Cart from "./pages/Cart";
 import Payment from "./pages/Payment";
 import Success from "./pages/Success";
 import Library from "./pages/Library";
+import LibraryInfo from "./pages/LibraryInfo";
 
 // Inicializa Stripe con tu clave pública
 const stripePromise = loadStripe(
@@ -41,6 +42,7 @@ function App() {
             />
             <Route path="/success" element={<Success />} />
             <Route path="/library" element={<Library />} />
+            <Route path="/library/:gameId" element={<LibraryInfo />} />
           </Routes>
         </Router>
       </CartProvider>
