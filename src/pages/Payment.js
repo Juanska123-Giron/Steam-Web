@@ -2,12 +2,24 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { loadStripe } from "@stripe/stripe-js";
+import Navbar from "../components/Navbar";
 import {
   Elements,
   useStripe,
   useElements,
   CardElement,
 } from "@stripe/react-stripe-js";
+import {
+  Container,
+  TitleTextView,
+  FormText,
+  InputBox,
+  RowBox,
+  ColumnBox,
+  BlueButton,
+  ButtonText,
+} from "../styles/GeneralStyles"; // Asegúrate de importar los estilos
+import { PaymentFormContainer } from "../styles/PaymentStyles";
 
 const stripePromise = loadStripe(
   "pk_test_51QAiyrHJvexuiPAUh3pXrY7BKMJDfeAa0xnVYDDt6n9s9fSEtAM0ljYMNqiR89g8fbS69QIX17MNUikmX4LnOHGS00lWnWIxOQ"
@@ -88,44 +100,52 @@ const Payment = () => {
     const isCardNumberValid = cardNumber.replace(/\s/g, "").length === 16;
     const isExpiryValid = expiry.length === 5 && expiry.includes("/");
     const isCvcValid = cvc.length === 3;
-  
+
     if (!isCardNumberValid || !isExpiryValid || !isCvcValid) {
-      window.alert("Por favor, completa correctamente todos los campos de la tarjeta.");
+      window.alert(
+        "Por favor, completa correctamente todos los campos de la tarjeta."
+      );
       return;
     }
-  
+
     setLoading(true);
-  
+
     if (!token) {
       window.alert("Token no encontrado. Por favor, inicia sesión nuevamente.");
       setLoading(false);
       return;
     }
-  
+
     try {
-      const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
+      const totalAmount = cartItems.reduce(
+        (total, item) => total + item.price,
+        0
+      );
       const gameIds = cartItems.map((item) => item._id);
-  
-      const response = await fetch(`http://localhost:3000/api/payment-cards/process`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          amount: totalAmount * 100,
-          gameIds,
-        }),
-      });
-  
+
+      const response = await fetch(
+        `https://prod.supersteam.pro/api/payment-cards/process`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            amount: totalAmount * 100,
+            gameIds,
+          }),
+        }
+      );
+
       if (!response.ok) {
         setLoading(false);
         return;
       }
-  
+
       const { clientSecret } = await response.json();
       const cardElement = elements.getElement(CardElement);
-  
+
       const { error } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement,
@@ -134,40 +154,46 @@ const Payment = () => {
           },
         },
       });
-  
+
       if (error) {
         console.error(error.message);
         window.alert("Hubo un problema con el pago.");
         setLoading(false);
         return;
       }
-  
+
       // Después de procesar el pago, agregamos el juego a la biblioteca
-      const saveGameToLibraryResponse = await fetch(`http://localhost:3000/api/games/add-to-library`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          gameIds,
-        }),
-      });
-  
+      const saveGameToLibraryResponse = await fetch(
+        `https://prod.supersteam.pro/api/games/add-to-library`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            gameIds,
+          }),
+        }
+      );
+
       const responseData = await saveGameToLibraryResponse.json();
-  
+
       // Verifica si la respuesta del backend indica que los juegos ya están en la biblioteca
-      if (responseData.message === "Todos los juegos ya están en la biblioteca.") {
+      if (
+        responseData.message === "Todos los juegos ya están en la biblioteca."
+      ) {
         console.log("Los juegos ya estaban en la biblioteca.");
       } else if (saveGameToLibraryResponse.ok) {
         console.log(responseData.message);
       } else {
-        console.error("Hubo un problema al agregar los juegos a la biblioteca.");
+        console.error(
+          "Hubo un problema al agregar los juegos a la biblioteca."
+        );
         window.alert("Hubo un problema al procesar el pago.");
       }
       window.alert("Pago procesado correctamente.");
       navigate("/success");
-  
     } catch (err) {
       console.error(err);
       window.alert("Pago procesado correctamente.");
@@ -176,35 +202,51 @@ const Payment = () => {
       setLoading(false);
     }
   };
-  
-  
 
   return (
-    <div>
-      <h1>Pago</h1>
-      <input
-        type="text"
-        value={cardNumber}
-        onChange={(e) => handleCardNumberChange(e.target.value)}
-        placeholder="Número de tarjeta"
-      />
-      {cardType && <p>Tipo de tarjeta: {cardType}</p>}
-      <input
-        type="text"
-        value={expiry}
-        onChange={(e) => handleExpiryChange(e.target.value)}
-        placeholder="MM/YY"
-      />
-      <input
-        type="text"
-        value={cvc}
-        onChange={(e) => setCvc(e.target.value)}
-        placeholder="CVC"
-      />
-      <button onClick={handlePayment} disabled={loading}>
-        {loading ? "Procesando..." : "Pagar"}
-      </button>
-    </div>
+    <>
+      <Navbar />
+      <Container>
+      <PaymentFormContainer>
+        <TitleTextView>Método de Pago</TitleTextView>
+
+        <FormText>Número de tarjeta</FormText>
+        {cardType && <p>Tipo de tarjeta: {cardType}</p>}
+        <InputBox
+          type="text"
+          value={cardNumber}
+          onChange={(e) => handleCardNumberChange(e.target.value)}
+          placeholder="Número de tarjeta"
+        />
+
+        <RowBox>
+          <ColumnBox>
+            <FormText>Fecha de expiración</FormText>
+            <InputBox
+              type="text"
+              value={expiry}
+              onChange={(e) => handleExpiryChange(e.target.value)}
+              placeholder="MM/YY"
+            />
+          </ColumnBox>
+
+          <ColumnBox>
+            <FormText>Código de seguridad</FormText>
+            <InputBox
+              type="text"
+              value={cvc}
+              onChange={(e) => setCvc(e.target.value)}
+              placeholder="CVC"
+            />
+          </ColumnBox>
+        </RowBox>
+
+        <BlueButton onClick={handlePayment} disabled={loading}>
+          <ButtonText>{loading ? "Procesando..." : "Pagar"}</ButtonText>
+        </BlueButton>
+      </PaymentFormContainer>
+    </Container>
+    </>
   );
 };
 
