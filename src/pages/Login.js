@@ -100,9 +100,8 @@ function Login() {
         // Guardar el token en localStorage
         localStorage.setItem("authToken", response.data.token);
         localStorage.setItem("userName", response.data.user_name);
-        // setServerResponse("Inicio de sesión exitoso");
         console.log("Logueo exitoso: ", response.data.user_name);
-        navigate("/"); // Asegúrate de tener la ruta '/dashboard' configurada en tu app
+        navigate("/"); // Redirigir al dashboard o página principal
       } else {
         setServerResponse("Error en el inicio de sesión. Inténtalo de nuevo.");
       }

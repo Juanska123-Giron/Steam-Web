@@ -22,7 +22,6 @@ export const CarouselContainer = styled.div`
 export const CarouselImage = styled.img`
   width: 800px;
   height: 500px;
-  object-fit: cover;
   border-radius: 10px;
   flex-shrink: 0;
 `;

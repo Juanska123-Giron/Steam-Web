@@ -10,6 +10,7 @@ export const Container = styled.div`
   padding-top: 40px;
   margin: 0;
   background-color: #1a2a3d;
+  height: auto;
 `;
 
 export const TitleTextView = styled.h1`
@@ -49,6 +50,7 @@ export const FormText = styled.span`
   font-size: 14px;
   color: #fff;
   font-weight: 300;
+  margin-bottom: 20px;
 `;
 
 export const DeleteText = styled.span`
@@ -79,6 +81,7 @@ export const ButtonGroup = styled.div`
   justify-content: center;
   width: 210px;
   margin: 0 auto;
+  margin-top: 30px;
 `;
 
 
