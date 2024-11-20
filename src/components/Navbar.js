@@ -53,9 +53,6 @@ function Navbar() {
       case "CARRITO":
         navigate("/cart");
         break;
-      case "MIS JUEGOS":
-        navigate("/upload-games");
-        break;
       default:
         navigate("/");
         break;
@@ -116,7 +113,7 @@ function Navbar() {
         data-aos="zoom-in"
       />
       <OptionsContainer data-aos="fade-up">
-        {["TIENDA", "BIBLIOTECA", "MI PERFIL", "CARRITO", "MIS JUEGOS"].map(
+        {["TIENDA", "BIBLIOTECA", "MI PERFIL", "CARRITO"].map(
           (option) => (
             <Option
               key={option}
