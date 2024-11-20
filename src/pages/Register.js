@@ -128,9 +128,7 @@ function Register() {
 
       if (response && response.data) {
         setServerResponse("Registro exitoso, redirigiendo...");
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
+        navigate("/login");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -145,9 +143,9 @@ function Register() {
         setServerResponse("Error en el registro. Inténtalo más tarde.");
       }
     } finally {
-      setTimeout(() => {
-        setShowSpanner(false);
-      }, 1000);
+      // setTimeout(() => {
+      //   setShowSpanner(false);
+      // }, 1000);
     }
   };
 
