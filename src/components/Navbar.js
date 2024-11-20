@@ -54,7 +54,7 @@ function Navbar() {
         navigate("/cart");
         break;
       case "MIS JUEGOS":
-        navigate("/library"); // Usa la ruta que desees
+        navigate("/upload-games");
         break;
       default:
         navigate("/");
