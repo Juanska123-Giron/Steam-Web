@@ -39,6 +39,24 @@ function Navbar() {
   const handleOptionClick = (option) => {
     setSelectedOption(option);
     setMobileMenuOpen(false);
+
+    switch (option) {
+      case "TIENDA":
+        navigate("/");
+        break;
+      case "BIBLIOTECA":
+        navigate("/library");
+        break;
+      case "MI PERFIL":
+        navigate("/profile");
+        break;
+      case "CARRITO":
+        navigate("/cart");
+        break;
+      default:
+        navigate("/");
+        break;
+    }
   };
 
   const toggleMobileMenu = () => {
@@ -95,16 +113,18 @@ function Navbar() {
         data-aos="zoom-in"
       />
       <OptionsContainer data-aos="fade-up">
-        {["TIENDA", "COMUNIDAD", "ACERCA DE", "SOPORTE"].map((option) => (
-          <Option
-            key={option}
-            onClick={() => handleOptionClick(option)}
-            $isSelected={selectedOption === option}
-            data-aos="zoom-in"
-          >
-            {option}
-          </Option>
-        ))}
+        {["TIENDA", "BIBLIOTECA", "MI PERFIL", "CARRITO"].map(
+          (option) => (
+            <Option
+              key={option}
+              onClick={() => handleOptionClick(option)}
+              $isSelected={selectedOption === option}
+              data-aos="zoom-in"
+            >
+              {option}
+            </Option>
+          )
+        )}
       </OptionsContainer>
       <OptionsContainer data-aos="fade-up">
         <OptionsContainerLogin>
@@ -115,7 +135,7 @@ function Navbar() {
               </UserNameLabel>
               <VerticalBar $userName />
               <UserNameLabel onClick={handleLogOutClick} data-aos="flip-left">
-                Cerrar
+                Cerrar Sesión
               </UserNameLabel>
             </>
           ) : (
