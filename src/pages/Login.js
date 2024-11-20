@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import QR from "../assets/QRSteam.svg";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -122,7 +121,6 @@ function Login() {
 
   return (
     <>
-      <Navbar />
       <Background>
         <MainContent>
           <Title data-aos="fade-down">Sign in</Title>

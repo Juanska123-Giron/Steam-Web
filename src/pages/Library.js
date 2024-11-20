@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import GameItemLibrary from "../components/GameItemLibrary";
 import { Container } from "../styles/GeneralStyles";
 import { GameList } from "../styles/MainMenuStyles";
@@ -53,7 +52,6 @@ function Library() {
 
   return (
     <div>
-      <Navbar />
       <Container>
         {isLoading && <div>Loading...</div>}{" "}
         {/* Aquí puedes agregar un componente de carga si lo prefieres */}

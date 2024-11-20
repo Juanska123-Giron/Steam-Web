@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import Navbar from "../components/Navbar";
 import {
   CartWrapper,
   GameContainer,
@@ -44,7 +43,6 @@ const Cart = () => {
 
   return (
     <>
-      <Navbar />
       <Container>
         <CartWrapper>
           <TitleTextView>Tu Carrito</TitleTextView>

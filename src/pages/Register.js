@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useNavigate } from "react-router-dom";
@@ -142,7 +141,6 @@ function Register() {
 
   return (
     <>
-      <Navbar />
       <Background>
         <MainContent>
           <Title data-aos="fade-down">CREA UNA CUENTA</Title>

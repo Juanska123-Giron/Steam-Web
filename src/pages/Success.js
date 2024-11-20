@@ -9,7 +9,6 @@ import {
   ButtonText,
 } from "../styles/GeneralStyles";
 import { PaymentFormContainer } from "../styles/PaymentStyles";
-import Navbar from "../components/Navbar";
 
 const Success = () => {
   const navigate = useNavigate();
@@ -20,7 +19,6 @@ const Success = () => {
 
   return (
     <>
-    <Navbar />
     <Container>
       <PaymentFormContainer>
         <TitleTextView>¡Gracias por tu compra!</TitleTextView>

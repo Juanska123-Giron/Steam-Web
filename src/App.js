@@ -4,7 +4,7 @@ import { CartProvider } from "./context/CartContext";
 import { GamesProvider } from "./context/GameContext";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-
+import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MainMenu from "./pages/MainMenu";
@@ -25,6 +25,7 @@ function App() {
     <GamesProvider>
       <CartProvider>
         <Router>
+          <Navbar />
           <Routes>
             <Route path="/" element={<MainMenu />} />
             <Route path="/login" element={<Login />} />

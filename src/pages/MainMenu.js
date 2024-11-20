@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import GameItem from "../components/GameItem";
 import Tag from "../components/Tag";
 import { Container } from "../styles/GeneralStyles";
@@ -83,7 +82,6 @@ function MainMenu() {
 
   return (
     <div>
-      <Navbar />
       <Container>
         {isLoading && <p>Cargando...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useGames } from "../context/GameContext";
 import AddToCartPopup from "../components/AddToCartPopUp";
-import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 import {
   Container,
@@ -72,7 +71,6 @@ const GameInfo = () => {
 
   return (
     <div>
-      <Navbar />
       <Container>
         <InfoSection>
           {/* Columna izquierda con las imágenes del juego y sección de comprar */}

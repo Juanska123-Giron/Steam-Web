@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { loadStripe } from "@stripe/stripe-js";
-import Navbar from "../components/Navbar";
 import {
   Elements,
   useStripe,
@@ -205,7 +204,6 @@ const Payment = () => {
 
   return (
     <>
-      <Navbar />
       <Container>
       <PaymentFormContainer>
         <TitleTextView>Método de Pago</TitleTextView>
