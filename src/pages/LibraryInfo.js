@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useGames } from "../context/GameContext"; // Si tienes un contexto de juegos
-import Navbar from "../components/Navbar"; // Barra de navegación
 import {
   Container,
   TitleTextView,
@@ -87,7 +86,6 @@ const LibraryInfo = () => {
 
   return (
     <div>
-      <Navbar />
       <Container>
         <InfoSection>
           {/* Columna izquierda con las imágenes del juego y sección de comprar */}
