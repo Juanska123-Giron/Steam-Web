@@ -16,6 +16,7 @@ import {
   CountrySelector,
   Spanner,
 } from "../styles/RegisterStyles";
+import Footer from "../components/Footer";
 
 function Register() {
   const navigate = useNavigate();
@@ -328,6 +329,7 @@ function Register() {
           </ContentContainer>
         </MainContent>
       </Background>
+      <Footer />
     </>
   );
 }

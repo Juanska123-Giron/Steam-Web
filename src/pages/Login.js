@@ -18,7 +18,13 @@ import {
   Button,
   Spanner,
   SubA,
+  PreFooter,
+  PreContainer,
+  Title2,
+  Button2,
+  Column2,
 } from "../styles/LoginStyles";
+import Footer from "../components/Footer";
 
 function Login() {
   const navigate = useNavigate(); // Hook para redirección
@@ -124,6 +130,10 @@ function Login() {
     }
   };
 
+  const handleSubmitAlt = async (e) => {
+    navigate("/register");
+  };
+
   const isButtonDisabled =
     !formData.email || !formData.password || validationErrors.email || validationErrors.password;
 
@@ -216,6 +226,25 @@ function Login() {
           </ContentContainer>
         </MainContent>
       </Background>
+      <PreFooter>
+        <PreContainer>
+          <Column2>
+            {/* <Title2 data-aos="fade-down">Sign in</Title2> */}
+            <Title2 data-aos="fade-up">Nuevo en Steam?</Title2>
+            <Button2 type="submit" onClick={handleSubmitAlt} data-aos="zoom-in">
+              Crear una cuenta
+            </Button2>
+          </Column2>
+          <Column2>
+            <p data-aos="zoom-in">
+              Es gratis y fácil. Descubre miles de juegos para jugar con millones de nuevos amigos.
+              <a href="/support">Obtén más información sobre Steam.</a>
+            </p>
+          </Column2>
+        </PreContainer>
+      </PreFooter>
+
+      <Footer />
     </>
   );
 }
