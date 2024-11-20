@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useNavigate } from "react-router-dom";
@@ -15,11 +16,13 @@ import {
   CountrySelector,
   Spanner,
 } from "../styles/RegisterStyles";
+import Footer from "../components/Footer";
 
 function Register() {
   const navigate = useNavigate();
 
   const [countries, setCountries] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [serverResponse, setServerResponse] = useState("");
   const [showSpanner, setShowSpanner] = useState(false);
 
@@ -29,7 +32,7 @@ function Register() {
     password: "",
     birthday: "",
     cellphone_number: "",
-    country_id: "",
+    country_id: "", // Campo de país
   });
 
   const [validationErrors, setValidationErrors] = useState({
@@ -38,6 +41,7 @@ function Register() {
     password: "",
     birthday: "",
     cellphone_number: "",
+    country_id: "", // Validación del campo de país
   });
 
   const [showErrorMessages, setShowErrorMessages] = useState({
@@ -46,6 +50,7 @@ function Register() {
     password: false,
     birthday: false,
     cellphone_number: false,
+    country_id: false, // Mostrar mensaje de error para el campo de país
   });
 
   useEffect(() => {
@@ -57,11 +62,13 @@ function Register() {
 
     const fetchCountries = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get("http://localhost:3000/api/country/");
         setCountries(response.data);
-        // console.log("Fetching Countries: ", response.data);
       } catch (error) {
         console.error("Error obteniendo países:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCountries();
@@ -88,6 +95,9 @@ function Register() {
       case "cellphone_number":
         errorMessage = value ? "" : "El número de teléfono es obligatorio";
         break;
+      case "country_id":
+        errorMessage = value ? "" : "Selecciona un país";
+        break;
       default:
         break;
     }
@@ -108,39 +118,44 @@ function Register() {
       }, 4500);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerResponse("");
     setShowSpanner(true);
 
     try {
-      console.log("FormData: ", formData);
       const response = await axios.post("http://localhost:3000/api/users", formData);
 
       if (response && response.data) {
         setServerResponse("Registro exitoso, redirigiendo...");
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
+        navigate("/login");
       }
     } catch (error) {
-      setServerResponse(
-        error.response && error.response.data && error.response.data.msg
-          ? error.response.data.msg
-          : "Error en el registro. Inténtalo de nuevo."
-      );
-    }
+      if (error.response && error.response.status === 400) {
+        // Resaltar el campo con error
+        const { field, msg } = error.response.data;
+        setValidationErrors((prevErrors) => ({ ...prevErrors, [field]: msg }));
+        setShowErrorMessages((prevShow) => ({ ...prevShow, [field]: true }));
 
-    setTimeout(() => {
-      setShowSpanner(false);
-    }, 4500);
+        // Mostrar mensaje general
+        setServerResponse(msg || "Error en los datos proporcionados.");
+      } else {
+        setServerResponse("Error en el registro. Inténtalo más tarde.");
+      }
+    } finally {
+      // setTimeout(() => {
+      //   setShowSpanner(false);
+      // }, 1000);
+    }
   };
 
-  const isButtonDisabled = Object.values(validationErrors).some((error) => error);
+  const isButtonDisabled =
+    Object.values(validationErrors).some((error) => error) ||
+    Object.values(formData).some((value) => value === "");
 
   return (
     <>
+      <Navbar />
       <Background>
         <MainContent>
           <Title data-aos="fade-down">CREA UNA CUENTA</Title>
@@ -199,7 +214,7 @@ function Register() {
                 )}
                 <Input
                   type="password"
-                  placeholder="Password"
+                  placeholder="Contraseña"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
@@ -208,6 +223,15 @@ function Register() {
                 />
 
                 <label data-aos="fade-up">Fecha de Nacimiento</label>
+                {showErrorMessages.birthday && (
+                  <span
+                    data-aos="fade-in"
+                    className="error-message"
+                    style={{ color: "red", transition: "opacity 2s" }}
+                  >
+                    {validationErrors.birthday}
+                  </span>
+                )}
                 <Input
                   type="date"
                   name="birthday"
@@ -218,9 +242,18 @@ function Register() {
                 />
 
                 <label data-aos="fade-up">Número de Teléfono</label>
+                {showErrorMessages.cellphone_number && (
+                  <span
+                    data-aos="fade-in"
+                    className="error-message"
+                    style={{ color: "red", transition: "opacity 2s" }}
+                  >
+                    {validationErrors.cellphone_number}
+                  </span>
+                )}
                 <Input
-                  type="text"
-                  placeholder="Teléfono"
+                  type="tel"
+                  placeholder="Número de Teléfono"
                   name="cellphone_number"
                   value={formData.cellphone_number}
                   onChange={handleChange}
@@ -229,6 +262,15 @@ function Register() {
                 />
 
                 <label data-aos="fade-up">País</label>
+                {showErrorMessages.country_id && (
+                  <span
+                    data-aos="fade-in"
+                    className="error-message"
+                    style={{ color: "red", transition: "opacity 2s" }}
+                  >
+                    {validationErrors.country_id}
+                  </span>
+                )}
                 <CountrySelector
                   name="country_id"
                   value={formData.country_id}
@@ -236,11 +278,15 @@ function Register() {
                   required
                   data-aos="fade-up"
                 >
-                  {countries.map((country) => (
-                    <option key={country._id} value={country._id}>
-                      {country.country_name}
-                    </option>
-                  ))}
+                  <option value="" disabled>
+                    Selecciona un país
+                  </option>
+                  {!isLoading &&
+                    countries.map((country) => (
+                      <option key={country._id} value={country._id}>
+                        {country.country_name}
+                      </option>
+                    ))}
                 </CountrySelector>
 
                 <Button
@@ -253,7 +299,7 @@ function Register() {
                   }}
                   data-aos="zoom-in"
                 >
-                  Registrarse
+                  Registrar
                 </Button>
 
                 {showSpanner && (
@@ -281,6 +327,7 @@ function Register() {
           </ContentContainer>
         </MainContent>
       </Background>
+      <Footer />
     </>
   );
 }
