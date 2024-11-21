@@ -47,9 +47,6 @@ function Navbar() {
       case "BIBLIOTECA":
         navigate("/library");
         break;
-      case "MI PERFIL":
-        navigate("/profile");
-        break;
       case "CARRITO":
         navigate("/cart");
         break;
@@ -113,7 +110,7 @@ function Navbar() {
         data-aos="zoom-in"
       />
       <OptionsContainer data-aos="fade-up">
-        {["TIENDA", "BIBLIOTECA", "MI PERFIL", "CARRITO"].map(
+        {["TIENDA", "BIBLIOTECA", "CARRITO"].map(
           (option) => (
             <Option
               key={option}

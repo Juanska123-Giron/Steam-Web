@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useNavigate } from "react-router-dom";
@@ -63,7 +62,7 @@ function Register() {
     const fetchCountries = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get("http://localhost:3000/api/country/");
+        const response = await axios.get("https://prod.supersteam.pro/api/country/");
         setCountries(response.data);
       } catch (error) {
         console.error("Error obteniendo países:", error);
@@ -124,7 +123,7 @@ function Register() {
     setShowSpanner(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/api/users", formData);
+      const response = await axios.post("https://prod.supersteam.pro/api/users", formData);
 
       if (response && response.data) {
         setServerResponse("Registro exitoso, redirigiendo...");
@@ -155,7 +154,6 @@ function Register() {
 
   return (
     <>
-      <Navbar />
       <Background>
         <MainContent>
           <Title data-aos="fade-down">CREA UNA CUENTA</Title>

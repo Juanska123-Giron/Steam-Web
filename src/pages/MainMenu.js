@@ -59,7 +59,7 @@ function MainMenu() {
       setIsLoading(true);
       try {
         const categoryQuery = selectedCategory ? `?category=${selectedCategory}` : "";
-        const response = await axios.get(`http://localhost:3000/api/games/${categoryQuery}`);
+        const response = await axios.get(`https://prod.supersteam.pro/api/games/${categoryQuery}`);
         setGames(response.data);
       } catch (error) {
         console.error("Error fetching games:", error);
