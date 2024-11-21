@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import QR from "../assets/QRSteam.svg";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -18,7 +17,13 @@ import {
   Button,
   Spanner,
   SubA,
+  PreFooter,
+  PreContainer,
+  Title2,
+  Button2,
+  Column2,
 } from "../styles/LoginStyles";
+import Footer from "../components/Footer";
 
 function Login() {
   const navigate = useNavigate(); // Hook para redirección
@@ -94,36 +99,44 @@ function Login() {
     setShowSpanner(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/api/users/login", formData);
+      const response = await axios.post(`${process.env.REACT_APP_API}/api/users/login`, formData);
 
       if (response && response.data && response.data.token) {
         // Guardar el token en localStorage
         localStorage.setItem("authToken", response.data.token);
         localStorage.setItem("userName", response.data.user_name);
-        // setServerResponse("Inicio de sesión exitoso");
         console.log("Logueo exitoso: ", response.data.user_name);
-        navigate("/"); // Asegúrate de tener la ruta '/dashboard' configurada en tu app
+        navigate("/"); // Redirigir al dashboard o página principal
       } else {
         setServerResponse("Error en el inicio de sesión. Inténtalo de nuevo.");
+        setTimeout(() => {
+          setShowSpanner(false);
+        }, 4500);
       }
     } catch (error) {
       if (error.response && error.response.data && error.response.data.msg) {
         setServerResponse(error.response.data.msg);
+        setTimeout(() => {
+          setShowSpanner(false);
+        }, 4500);
       } else {
         setServerResponse("Error en el inicio de sesión. Inténtalo de nuevo.");
+        setTimeout(() => {
+          setShowSpanner(false);
+        }, 4500);
       }
     }
-
-    setTimeout(() => {
-      setShowSpanner(false);
-    }, 9500);
   };
 
-  const isButtonDisabled = validationErrors.email || validationErrors.password;
+  const handleSubmitAlt = async (e) => {
+    navigate("/register");
+  };
+
+  const isButtonDisabled =
+    !formData.email || !formData.password || validationErrors.email || validationErrors.password;
 
   return (
     <>
-      <Navbar />
       <Background>
         <MainContent>
           <Title data-aos="fade-down">Sign in</Title>
@@ -210,6 +223,25 @@ function Login() {
           </ContentContainer>
         </MainContent>
       </Background>
+      <PreFooter>
+        <PreContainer>
+          <Column2>
+            {/* <Title2 data-aos="fade-down">Sign in</Title2> */}
+            <Title2 data-aos="fade-up">Nuevo en Steam?</Title2>
+            <Button2 type="submit" onClick={handleSubmitAlt} data-aos="zoom-in">
+              Crear una cuenta
+            </Button2>
+          </Column2>
+          <Column2>
+            <p data-aos="zoom-in">
+              Es gratis y fácil. Descubre miles de juegos para jugar con millones de nuevos amigos.
+              <a href="/support">Obtén más información sobre Steam.</a>
+            </p>
+          </Column2>
+        </PreContainer>
+      </PreFooter>
+
+      <Footer />
     </>
   );
 }

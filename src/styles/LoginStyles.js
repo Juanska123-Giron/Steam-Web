@@ -1,18 +1,16 @@
 import styled from "styled-components";
-
 export const Background = styled.div`
   background-image: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRsnnP1OQlpaTvPev-AknNPq6bybt8_f9GKZVnKHO7Y45zoUbA1c9cFJA7RHQrhLKc1L00Dp87TkHXEsMqgIzZ0c4khSVCl629_bm5ikaQNyoBuRX8xVyCQIhrHS9jFMQsmnNCh0OOvKGMB25VNShGRYBHgjUMIZ6M-aKqoLdU0kUnrWAtdQnA3iz8GRQ/s16000/paperWall.png");
   background-size: cover;
-  background-position: center center;
+  background-position: center;
   background-repeat: no-repeat;
-  height: 100;
+  height: 650px;
   display: flex;
-  flex-direction: column; /* Alineación de los hijos en columna */
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Alinea el contenido al inicio (arriba) */
+  justify-content: flex-start;
   position: relative;
   overflow: hidden;
-  clip-path: inset(0 0 0 0); /* Mantiene el corte en la parte inferior */
 
   &::before {
     content: "";
@@ -21,7 +19,7 @@ export const Background = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(2px);
     z-index: 1;
   }
@@ -33,7 +31,7 @@ export const Background = styled.div`
 `;
 
 export const MainContent = styled.div`
-  //background-color: rgba(0, 0, 0, 0.4);
+  // background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   align-items: center; /* Centra horizontalmente el ContentContainer */
@@ -64,6 +62,14 @@ export const Title = styled.h2`
   text-align: left; /* Alinea el título a la izquierda */
   width: 100%;
 `;
+export const Title2 = styled.h2`
+  font-size: 19px;
+  font-weight: 1000;
+  color: white;
+  margin-bottom: 1.1rem;
+  text-align: center; /* Alinea el título a la izquierda */
+  width: 100%;
+`;
 
 export const TitleAlt = styled.h2`
   font-size: 28.2px;
@@ -75,6 +81,7 @@ export const TitleAlt = styled.h2`
 `;
 
 export const FormContainer = styled.div`
+  // background-color: blue;
   padding: 0 1.5rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -84,6 +91,7 @@ export const FormContainer = styled.div`
 `;
 
 export const Column = styled.div`
+  // background-color: red;
   display: flex;
   flex-direction: column;
 
@@ -102,7 +110,7 @@ export const Column = styled.div`
   }
 
   p {
-    font-size: 18px !important;
+    font-size: 12px !important;
     color: #afafaf;
 
     text-align: center;
@@ -114,6 +122,29 @@ export const Column = styled.div`
     margin-bottom: 12px;
   }
 `;
+
+export const Column2 = styled.div`
+  // background-color: red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente el contenido */
+  align-items: center; /* Centra horizontalmente el contenido */
+
+  a {
+    font-size: 14px;
+    color: #afafaf;
+    text-decoration: underline;
+    margin-top: 1rem;
+  }
+
+  p {
+    font-size: 14px !important;
+    color: #afafaf;
+    text-align: center;
+    font-weight: 500;
+  }
+`;
+
 export const SubA = styled.a`
   text-decoration: none !important;
   text-align: center !important;
@@ -145,6 +176,22 @@ export const Button = styled.button`
   cursor: pointer;
   transition: background 0.3s ease;
   margin-top: 1rem;
+
+  &:hover {
+    background: linear-gradient(to right, #4172f6, #56bcf9); /* Invertir el degradado en hover */
+  }
+`;
+
+export const Button2 = styled.button`
+  background: linear-gradient(to right, #56bcf9, #4172f6); /* Agregar el degradado horizontal */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  padding: 0.45rem 2rem !important;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
 
   &:hover {
     background: linear-gradient(to right, #4172f6, #56bcf9); /* Invertir el degradado en hover */
@@ -196,4 +243,32 @@ export const ErrorMessage = styled.div`
       opacity: 0;
     }
   }
+`;
+
+export const PreFooter = styled.div`
+  background-color: #181a20;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra horizontalmente el ContentContainer */
+
+  padding: 3rem 22rem; /* Añade un margen lateral para que no quede pegado al borde */
+  margin-top: -0.2px; /* Asegura que esté pegado a la parte superior */
+`;
+
+export const PreContainer = styled.div`
+  // background-color: blue;
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 80%;
+  text-align: center;
+  al
+`;
+
+export const Paraghp = styled.p`
+  font-size: 12px;
+  color: #afafaf;
+  margin-top: 1rem;
+  text-align: center;
 `;
