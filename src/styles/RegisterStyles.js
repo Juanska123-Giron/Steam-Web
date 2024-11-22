@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const Background = styled.div`
-  background-image: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRsnnP1OQlpaTvPev-AknNPq6bybt8_f9GKZVnKHO7Y45zoUbA1c9cFJA7RHQrhLKc1L00Dp87TkHXEsMqgIzZ0c4khSVCl629_bm5ikaQNyoBuRX8xVyCQIhrHS9jFMQsmnNCh0OOvKGMB25VNShGRYBHgjUMIZ6M-aKqoLdU0kUnrWAtdQnA3iz8GRQ/s16000/paperWall.png");
+  background-image: url("https://cdn.drenvio.com/steam.webp");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -30,7 +30,7 @@ export const Background = styled.div`
     position: relative;
     z-index: 2;
   }
-`;
+`
 
 export const MainContent = styled.div`
   //   background-color: rgba(0, 0, 0, 0.4);
@@ -41,7 +41,7 @@ export const MainContent = styled.div`
   width: 100%;
   padding: 4.2rem 8rem; /* Añade un margen lateral para que no quede pegado al borde */
   margin-top: 0; /* Asegura que esté pegado a la parte superior */
-`;
+`
 
 export const ContentContainer = styled.div`
   //background-color: rgba(24, 26, 32, 0.95);
@@ -53,7 +53,7 @@ export const ContentContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
-`;
+`
 
 export const Title = styled.h2`
   margin-left: 0.5rem;
@@ -63,7 +63,7 @@ export const Title = styled.h2`
   margin-bottom: 1.9rem;
   text-align: left; /* Alinea el título a la izquierda */
   width: 100%;
-`;
+`
 
 export const TitleAlt = styled.h2`
   font-size: 28.2px;
@@ -72,7 +72,7 @@ export const TitleAlt = styled.h2`
   margin-bottom: 1rem;
   text-align: left; /* Alinea el título a la izquierda */
   width: 100%;
-`;
+`
 
 export const FormContainer = styled.div`
   //padding: 0 0rem;
@@ -81,7 +81,7 @@ export const FormContainer = styled.div`
   gap: 2rem;
   width: 100%;
   text-align: left; /* Alinea el contenido del formulario a la izquierda */
-`;
+`
 
 export const Column = styled.div`
   display: flex;
@@ -113,7 +113,7 @@ export const Column = styled.div`
     color: #ce1c0d;
     margin-bottom: 12px;
   }
-`;
+`
 
 export const Input = styled.input`
   background-color: #31465c;
@@ -123,7 +123,7 @@ export const Input = styled.input`
   color: white;
   margin-bottom: 1rem;
   font-size: 1rem;
-`;
+`
 export const Button = styled.button`
   background: linear-gradient(to right, #56bcf9, #4172f6); /* Agregar el degradado horizontal */
   color: white;
@@ -138,7 +138,7 @@ export const Button = styled.button`
   &:hover {
     background: linear-gradient(to right, #4172f6, #56bcf9); /* Invertir el degradado en hover */
   }
-`;
+`
 
 export const CountrySelector = styled.select`
   background-color: #31465c;
@@ -163,7 +163,7 @@ export const CountrySelector = styled.select`
     color: white;
     pointer-events: none; /* Hace que la flecha no interfiera con la selección */
   }
-`;
+`
 
 export const Spanner = styled.span`
   margin: auto;
@@ -173,4 +173,4 @@ export const Spanner = styled.span`
   margin-top: 1rem;
   transition: opacity 2s ease;
   opacity: ${(props) => (props.showSpanner ? 1 : 0)};
-`;
+`
